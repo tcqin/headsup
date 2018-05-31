@@ -7,7 +7,7 @@ const session = require('express-session');
 // local dependencies
 const views = require('./routes/views');
 const db = require('./db');
-const passport = require('./passport');
+const passport = require('./config/passport');
 
 // initialize the express app
 const app = express();
@@ -15,17 +15,6 @@ const app = express();
 // hook up passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-// link to facebook
-app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    failureRedirect: '/'
-  }),
-  function(req, res) {
-    res.redirect('/');
-  }
-);
 
 // set routes
 app.use('/', views);
