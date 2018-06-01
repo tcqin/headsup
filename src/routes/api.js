@@ -12,11 +12,10 @@ const router = express.Router();
 // API endpoints //
 ///////////////////
 
-router.get('/online_users', function(req, res) {
+router.get('/users', function(req, res) {
   User.find(req.query, function(err, users) {
     res.send(users);
   });
 });
-
 
 module.exports = router;

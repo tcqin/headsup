@@ -35,10 +35,27 @@ const options = {
   key: fs.readFileSync("server.key"),
   cert: fs.readFileSync("server.crt")
 }
-
 const port = 5186;
 const server = https.Server(options, app);
 
+// set up socket
+const io = require('socket.io')(server);
+io.on('connection', function(client){
+
+  console.log('Client connected.');
+
+  client.on('home page chat message', function(message) {
+    console.log('message: ' + message);
+    io.emit('home page chat message', message);
+  });
+
+  client.on('disconnect', function() {
+    console.log('Client disconnected.');
+  });
+
+});
+
+// deploy server
 server.listen(port, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });

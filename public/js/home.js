@@ -1,7 +1,7 @@
 function displayUsers() {
   const user_dropdown = document.getElementById("online-users");
   console.log('here');
-  get('/api/online_users', {'online' : true}, function(online_users) {
+  get('/api/users', {'online' : true}, function(online_users) {
 
     for (let i = 0; i < online_users.length; i++) {
       const online_user = online_users[i];
