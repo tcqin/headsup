@@ -6,17 +6,30 @@ const router = express.Router();
 const db = require('../db');
 const passport = require('../config/passport');
 
+// models
+const User = require('../models/user');
+
 // public endpoints
 router.get('/', function(req, res, next) {
-  res.sendFile('index.html', { root: 'src/views' });
+  if (req.isAuthenticated()) {
+    res.redirect('/home');
+  } else {
+    res.sendFile('index.html', { root: 'src/views'});
+  }
 });
 
 router.get('/home', function(req, res, next) {
-  res.sendFile('home.html', { root: 'src/views' });
+  if (req.isAuthenticated()) {
+    res.sendFile('home.html', { root: 'src/views'});
+  } else {
+    res.redirect('/');
+  }
 });
 
 // link to facebook
-router.get('/auth/facebook', passport.authenticate('facebook'));
+router.get('/auth/facebook', passport.authenticate('facebook', {
+  scope: ['public_profile']
+}));
 router.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     successRedirect: '/home',
@@ -29,6 +42,13 @@ router.get('/auth/facebook/callback',
 
 // route for logging out
 router.get('/logout', function(req, res) {
+  console.log(req.user);
+
+  User.update({facebook: req.user.facebook},
+    {online: false}, function(err,count,status) {
+    if (err) console.log(err);
+  });
+
   req.logout();
   res.redirect('/');
 });

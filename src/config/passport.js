@@ -33,7 +33,15 @@ passport.use(new fbp.Strategy({
 
         // if the user is found, then log them in
         if (user) {
-          return done(null, user); // user found, return that user
+          user.online = true; // set the user to be online
+          user.save(function(err) {
+            if (err) {
+              console.log(err);
+              throw err;
+            } else {
+              return done(null, user); // user found, return that user
+            }
+          });
         } else {
           // if there is no user found with that facebook id, create them
           var user = new User();
@@ -42,14 +50,16 @@ passport.use(new fbp.Strategy({
           user.facebook.id    = profile.id; // set the users facebook id                   
           user.facebook.token = accessToken; // we will save the token that facebook provides to the user                    
           user.facebook.name  = profile.displayName; // look at the passport user profile to see how names are returned
+          user.online = true;
   
           user.save(function(err) {
             if (err) {
               console.log(err);
               throw err;
+            } else {
+              // if successful, return the new user
+              return done(err, user);
             }
-            // if successful, return the new user
-            return done(err, user);
           });
         }
 
