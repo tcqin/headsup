@@ -1,5 +1,5 @@
 // libraries
-const https = require('https');
+const http = require('http');
 const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
@@ -36,7 +36,7 @@ const options = {
   cert: fs.readFileSync("server.crt")
 }
 const port = 5186;
-const server = https.Server(options, app);
+const server = http.Server(app);
 
 // set up socket
 const io = require('socket.io')(server);
@@ -56,6 +56,6 @@ io.on('connection', function(client){
 });
 
 // deploy server
-server.listen((process.env.PORT || 5186), function(){
+server.listen((process.env.PORT || port), function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
