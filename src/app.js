@@ -1,5 +1,5 @@
 // libraries
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
@@ -36,7 +36,7 @@ const options = {
   cert: fs.readFileSync("server.crt")
 }
 const port = 5186;
-const server = http.Server(app);
+const server = https.Server(options, app);
 
 // set up socket
 const io = require('socket.io')(server);
