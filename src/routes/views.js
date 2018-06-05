@@ -11,20 +11,24 @@ const User = require('../models/user');
 
 // public endpoints
 router.get('/', function(req, res, next) {
-  if (req.isAuthenticated()) {
-    res.redirect('/home');
-  } else {
-    res.sendFile('index.html', { root: 'src/views'});
-  }
+  console.log('hello');
+  res.sendFile('home.html', { root: 'src/views'});
+  console.log(req.session);
+  console.log(req.sessionID);
+  // if (req.isAuthenticated()) {
+  //   res.redirect('/home');
+  // } else {
+  //   res.sendFile('index.html', { root: 'src/views'});
+  // }
 });
 
-router.get('/home', function(req, res, next) {
-  if (req.isAuthenticated()) {
-    res.sendFile('home.html', { root: 'src/views'});
-  } else {
-    res.redirect('/');
-  }
-});
+// router.get('/home', function(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     res.sendFile('home.html', { root: 'src/views'});
+//   } else {
+//     res.redirect('/');
+//   }
+// });
 
 // link to facebook
 router.get('/auth/facebook', passport.authenticate('facebook', {

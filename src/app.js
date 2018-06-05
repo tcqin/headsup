@@ -1,5 +1,5 @@
 // libraries
-const https = require('https');
+const http = require('http');
 const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
@@ -31,12 +31,12 @@ app.use('/api', api);
 app.use('/static', express.static('public'));
 
 // set port and server
-const options = {
-  key: fs.readFileSync("server.key"),
-  cert: fs.readFileSync("server.crt")
-}
+// const options = {
+//   key: fs.readFileSync("server.key"),
+//   cert: fs.readFileSync("server.crt")
+// }
 const port = 5186;
-const server = https.Server(options, app);
+const server = http.Server(app);
 
 // set up socket
 const io = require('socket.io')(server);
