@@ -1,14 +1,63 @@
 // libraries
 const passport = require('passport');
 const fbp = require('passport-facebook');
+const lp = require('passport-local');
 
 // import schemas
 const User = require('../models/user');
 
 // load the auth variables
-var configAuth = require('./auth');
+const configAuth = require('./auth');
 
-// set up passport configs for facebook
+// =====================================
+// LOCAL AUTHENTICATION ================
+// =====================================
+passport.use('local-signup', new lp.Strategy({
+
+  // pull in necessary fields from our auth.js file
+  usernameField: configAuth.localAuth.usernameField,
+  passwordField: configAuth.localAuth.passwordField,
+  passReqToCallback: configAuth.localAuth.passReqToCallback
+
+  },
+
+  function(req, email, password, done) {
+
+    // asynchronous
+    process.nextTick(function() {
+
+      // find a user whose email is the same as the forms email
+      // we are checking to see if the user trying to log in already exists
+      User.findOne({'local.email': email}, function(err, user) {
+
+        // return on error
+        if (err) return done(err);
+
+        // check to see if user already exists
+        if (user) {
+          return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+        } else {
+          // if there is no user with that email, create a new one
+          var newUser = new User();
+
+          newUser.local.email = email;
+          newUser.local.password = newUser.generateHash(password);
+
+          // save the user
+          newUser.save(function(err) {
+            if (err) throw err;
+            return done(null, newUser);
+          });
+        };
+      });
+    });
+  }
+
+));
+
+// =====================================
+// FACEBOOK AUTHENTICATION =============
+// =====================================
 passport.use(new fbp.Strategy({
 
   // pull in our app id and secret from our auth.js file
@@ -67,14 +116,16 @@ passport.use(new fbp.Strategy({
 
     });
 
-}));
+  }
+));
 
-// used to serialize the user
+// =====================================
+// USER SERIALIZATION/DESERIALIZATION ==
+// =====================================
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
-// used to deserialize the user
 passport.deserializeUser(function(user, done) {
   done(null, user);
 });

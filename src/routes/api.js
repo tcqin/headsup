@@ -1,5 +1,6 @@
 // dependencies
 const express = require('express');
+const passport = require('passport');
 
 // models
 const User = require('../models/user');
@@ -17,5 +18,11 @@ router.get('/users', function(req, res) {
     res.send(users);
   });
 });
+
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/profile',
+  failureRedirect: '/signup',
+  failureFlash: true
+}));
 
 module.exports = router;

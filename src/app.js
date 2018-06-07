@@ -2,7 +2,12 @@
 const http = require('http');
 const express = require('express');
 const session = require('express-session');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
 const fs = require('fs');
+const path = require('path');
 
 // local dependencies
 const views = require('./routes/views');
@@ -12,6 +17,7 @@ const passport = require('./config/passport');
 
 // initialize the express app
 const app = express();
+app.set('views', path.join(__dirname, '/views'));
 
 // set up sessions
 app.use(session({
@@ -24,6 +30,7 @@ app.use(session({
 // hook up passport
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 // set routes
 app.use('/', views);

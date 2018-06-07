@@ -1,6 +1,13 @@
 // expose our config directly to our application using module.exports
 module.exports = {
 
+    // local authentication
+    'localAuth' : {
+        'usernameField'     : 'email',
+        'passwordField'     : 'password',
+        'passReqToCallback' : true // allows us to pass back the entire request to the callback
+    },
+
     // facebook authentication
     'facebookAuth' : {
         'clientID'      : '203216556963757', // your App ID

@@ -9,55 +9,69 @@ const passport = require('../config/passport');
 // models
 const User = require('../models/user');
 
-// public endpoints
+// =====================================
+// HOME PAGE (with login links) ========
+// =====================================
 router.get('/', function(req, res, next) {
-  console.log('hello');
-  res.sendFile('home.html', { root: 'src/views'});
-  console.log(req.session);
-  console.log(req.sessionID);
-  // if (req.isAuthenticated()) {
-  //   res.redirect('/home');
-  // } else {
-  //   res.sendFile('index.html', { root: 'src/views'});
-  // }
+  res.render('index.ejs');
 });
 
-// router.get('/home', function(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     res.sendFile('home.html', { root: 'src/views'});
-//   } else {
+// link to facebook
+// router.get('/auth/facebook', passport.authenticate('facebook', {
+//   scope: ['public_profile']
+// }));
+// router.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', {
+//     successRedirect: '/home',
+//     failureRedirect: '/',
+//   }),
+//   function(req, res) {
 //     res.redirect('/');
 //   }
-// });
+// );
 
-// link to facebook
-router.get('/auth/facebook', passport.authenticate('facebook', {
-  scope: ['public_profile']
+// =====================================
+// LOGIN ===============================
+// =====================================
+router.get('/login', function(req, res) {
+  // render the page and pass in any flash data if it exists
+  res.render('login.ejs', { message: req.flash('loginMessage') }); 
+});
+
+// =====================================
+// SIGNUP ==============================
+// =====================================
+router.get('/signup', function(req, res) {
+  // render the page and pass in any flash data if it exists
+  res.render('signup.ejs', { message: req.flash('signupMessage') });
+});
+
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect : '/home', // redirect to the secure profile section
+  failureRedirect : '/signup', // redirect back to the signup page if there is an error
+  failureFlash : true // allow flash messages
 }));
-router.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/home',
-    failureRedirect: '/',
-  }),
-  function(req, res) {
-    res.redirect('/');
-  }
-);
 
-// route for logging out
+// =====================================
+// HOME SECTION ========================
+// =====================================
+router.get('/home', isLoggedIn, function(req, res) {
+    res.render('home.ejs', {
+        user : req.user // get the user out of session and pass to template
+    });
+});
+
+// =====================================
+// LOGOUT ==============================
+// =====================================
 router.get('/logout', function(req, res) {
-  console.log(req.user);
-
-  User.update({facebook: req.user.facebook},
-    {online: false}, function(err,count,status) {
-    if (err) console.log(err);
-  });
-
   req.logout();
   res.redirect('/');
 });
 
-// route middleware to make sure a user is logged in
+// =====================================
+// MAKE SURE USER IS LOGGED IN =========
+// =====================================
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
