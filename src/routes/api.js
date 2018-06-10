@@ -9,6 +9,7 @@ const Hand = require('../models/hand');
 // export router
 const router = express.Router();
 
+const HandModel = require('../models/handmodel');
 ///////////////////
 // API endpoints //
 ///////////////////
