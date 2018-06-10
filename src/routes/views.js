@@ -62,8 +62,9 @@ module.exports = function(app, passport) {
   // LOGOUT ==============================
   // =====================================
   app.get('/logout', function(req, res) {
+    console.log(req.user);
 
-    User.findOne({'local.username': req.user.username}, function(err, user) {
+    User.findOne({'local.username': req.user.local.username}, function(err, user) {
       user.online = false;
       user.save(function(err) {
         if (err) throw err;
