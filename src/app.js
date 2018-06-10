@@ -2,46 +2,47 @@
 const http = require('http');
 const express = require('express');
 const session = require('express-session');
+const mongoose = require('mongoose');
+const passport = require('passport');
 const flash = require('connect-flash');
+
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const fs = require('fs');
 const path = require('path');
 
-// local dependencies
-const views = require('./routes/views');
-const api = require('./routes/api');
-const db = require('./db');
-const passport = require('./config/passport');
-
 // initialize the express app
 const app = express();
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); // get information from html forms
+
+// local dependencies
+const api = require('./routes/api');
+const db = require('./db');
+
+// set the paths
 app.set('views', path.join(__dirname, '/views'));
 
-// set up sessions
+// required for passport
 app.use(session({
-  cookieName: 'session',
   secret: '2]-d=s84hfnsg2934.v/s[ak198fnba]',
-  resave: 'false',
-  saveUninitialized: 'true'
-}));
-
-// hook up passport
+  saveUninitialized: true,
+  resave: true
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
 // set routes
-app.use('/', views);
 app.use('/api', api);
 app.use('/static', express.static('public'));
+require('./config/passport')(passport);
+require('./routes/views.js')(app, passport);
 
-// set port and server
-// const options = {
-//   key: fs.readFileSync("server.key"),
-//   cert: fs.readFileSync("server.crt")
-// }
 const port = 5186;
 const server = http.Server(app);
 

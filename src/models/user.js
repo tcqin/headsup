@@ -8,7 +8,7 @@ const UserModelSchema = new mongoose.Schema({
     online: Boolean,
 
     local: {
-        email   : String,
+        username: String,
         password: String
     },
 

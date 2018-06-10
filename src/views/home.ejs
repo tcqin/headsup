@@ -2,36 +2,22 @@
 <html>
   <head>
     <title>Poker Heads-Up App</title>
-    <link rel="icon" href="logo.png">
+    <link rel="shortcut icon" type="image/png" href="logo.png"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
     <div class="container">
-      <div class="page-header text-center">
-          <h1><span class="fa fa-anchor" id="profile-title"></span>Welcome to NLHE Poker Heads-Up!</h1>
+      <div class="jumbotron text-center">
+        <h1><span class="fa fa-lock"></span>NLHE Poker Heads-Up App</h1>
+
+        <p>Login or Register with:</p>
+
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login Here</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup Here</a>
       </div>
-    <div class="row">
-        <!-- FACEBOOK INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well" id="online-users">
-                <h3 class="text-primary"><span class="fa fa-facebook"></span>Users Online</h3>
-                <!-- ONLINE USERS GO HERE -->
-            </div>
-        </div>
     </div>
-    <h1>Chat with other users!</h1>
-    <div id="future"></div>
-    <form id="chat-form">
-        <input id="chat-message" autocomplete="off"/>
-        <input id="send-chat-button" type="submit" value="Send">
-    </form>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/home.js"></script>
-    <script src="/static/js/socket.js"></script>
   </body>
 </html>
