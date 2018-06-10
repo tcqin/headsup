@@ -1,52 +1,80 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Poker Heads-Up App</title>
-    <link rel="icon" href="logo.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="container">
-      <div class="page-header text-center">
-          <h1><span class="fa fa-anchor" id="profile-title"></span>Welcome to NLHE Poker Heads-Up!</h1>
+<html lang="en">
+<head>
+  <title>Poker Heads-Up App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/static/css/profile.css">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#"></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Game History</a></li>
+        <li><a href="#">Hand History</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout" id="logout-button"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <h4 class="online-users">Online Users</h4>
+      <div data-spy="scroll" data-offset="0" class="scrollspy-example" id="online-users">
+        <!-- online users are inserted here -->
       </div>
-      <div class="row">
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-          <div class="well">
-              <h3><span class="fa fa-user"></span>Username:</h3>
-              <p><%= user.local.username %></p>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <form action="/logout" method="get">
-            <button type="submit" class="btn btn-warning btn-lg">Logout</button>
-          </form>
-        </div>
+    </div>
+    <div class="col-sm-8 text-left"> 
+      <h1>Welcome to NLHE Poker Heads-Up</h1>
+      <div data-spy="scroll" data-offset="0" class="scrollspy-example" id="chat-messages">
+        <!-- all messages are inserted here -->
       </div>
-      <div class="row">
-          <!-- FACEBOOK INFORMATION -->
-          <div class="col-sm-6">
-              <div class="well" id="online-users">
-                  <h3 class="text-primary"><span class="fa fa-facebook"></span>Users Online</h3>
-                  <!-- ONLINE USERS GO HERE -->
-              </div>
-          </div>
-      </div>
-      <h1>Chat with other users!</h1>
-      <div id="future"></div>
+      <hr>
       <form id="chat-form">
           <input id="chat-message" autocomplete="off"/>
           <input id="send-chat-button" type="submit" value="Send">
       </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/profile.js"></script>
-    <script src="/static/js/socket.js"></script>
-  </body>
+    <div class="col-sm-2 sidenav">
+      <div class="well">
+        <strong>Welcome, <%= user.local.username %>!</strong>
+        <p>Profile Information</p>
+        <p hidden id="username"><%= user.local.username %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>© 2018 Tiancheng Qin and Courtney Guo, All Rights Reserved</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/profile.js"></script>
+<script src="/static/js/socket.js"></script>
+
+</body>
 </html>

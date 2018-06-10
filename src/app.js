@@ -43,6 +43,18 @@ app.use('/static', express.static('public'));
 require('./config/passport')(passport);
 require('./routes/views.js')(app, passport);
 
+// refresh users
+const User = require('./models/user');
+User.find({}, function(err, users) {
+  for (let i = 0; i < users.length; i++) {
+    var user = users[i]
+    user.online = false;
+    user.save(function(err) {
+      if (err) throw err;
+    });
+  };
+});
+
 const port = 5186;
 const server = http.Server(app);
 
@@ -50,15 +62,16 @@ const server = http.Server(app);
 const io = require('socket.io')(server);
 io.on('connection', function(client){
 
-  console.log('Client connected.');
-
-  client.on('home page chat message', function(message) {
-    console.log('message: ' + message);
-    io.emit('home page chat message', message);
+  client.on('user login', function(data) {
+    io.emit('user login', data);
   });
 
-  client.on('disconnect', function() {
-    console.log('Client disconnected.');
+  client.on('user logout', function(data) {
+    io.emit('user logout', data);
+  });
+
+  client.on('home page chat message', function(data) {
+    io.emit('home page chat message', data);
   });
 
 });
