@@ -2,6 +2,7 @@ $(function () {
   var socket = io();
   $('#chat-form').submit(function(){
     socket.emit('home page chat message', $('#chat-message').val());
+    console.log($('#chat-message').val());
     $('#chat-message').val('');
     return false;
   });
