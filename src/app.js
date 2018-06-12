@@ -60,18 +60,26 @@ const server = http.Server(app);
 
 // set up socket
 const io = require('socket.io')(server);
-io.on('connection', function(client){
+io.on('connection', function(socket){
 
-  client.on('user login', function(data) {
-    io.emit('user login', data);
+  console.log('Client connected.');
+
+  socket.on('user-login', function(data) {
+    socket.username = data;
+    io.emit('user-login', data);
   });
 
-  client.on('user logout', function(data) {
-    io.emit('user logout', data);
+  socket.on('user-logout', function(data) {
+    io.emit('user-disconnect', data);
   });
 
-  client.on('home page chat message', function(data) {
-    io.emit('home page chat message', data);
+  socket.on('home-page-chat-message', function(data) {
+    io.emit('home-page-chat-message', data);
+  });
+
+  socket.on('disconnect', function() {
+    io.emit('user-disconnect', socket.username);
+    console.log('Client disconnected.');
   });
 
 });
