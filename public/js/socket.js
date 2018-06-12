@@ -3,7 +3,7 @@ $(function () {
   var username = $('#username')[0].innerHTML;
 
   // telling the server that you are logged in
-  socket.emit('user login', username);
+  socket.emit('user-login', username);
 
   // telling the server that you are logged out
   $('#logout-button').click(function() {
