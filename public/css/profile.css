@@ -5,7 +5,7 @@
 }
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {height: 450px}
+.row.content {height: 600px}
 
 /* Set gray background color and 100% height */
 .sidenav {
@@ -45,5 +45,5 @@ footer {
 }
 
 #chat-messages {
-  height: 300px;
+  height: 450px;
 }
