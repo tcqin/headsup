@@ -20,7 +20,6 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 // local dependencies
-const api = require('./routes/api');
 const db = require('./db');
 
 // set the paths
@@ -38,10 +37,10 @@ app.use(passport.session());
 app.use(flash());
 
 // set routes
-app.use('/api', api);
 app.use('/static', express.static('public'));
 require('./config/passport')(passport);
-require('./routes/views.js')(app, passport);
+require('./routes/login.js')(app, passport);
+require('./routes/game.js')(app, passport);
 
 // refresh users
 const User = require('./models/user');
@@ -64,6 +63,7 @@ io.on('connection', function(socket){
 
   console.log('Client connected.');
 
+  // homepage chat
   socket.on('user-login', function(data) {
     socket.username = data;
     io.emit('user-login', data);
@@ -80,6 +80,18 @@ io.on('connection', function(socket){
   socket.on('disconnect', function() {
     io.emit('user-disconnect', socket.username);
     console.log('Client disconnected.');
+  });
+
+  // gameplay
+  socket.on('room', function(room) {
+    socket.join(room);
+    socket.room = room;
+    console.log('joined room', room);
+  });
+
+  socket.on('send-action', function (data) {
+    io.sockets.in(socket.room).emit('update-hand', data);
+    console.log('sent action', data);
   });
 
 });
