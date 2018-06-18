@@ -1,18 +1,6 @@
 const User = require('../models/user');
 
 module.exports = function(app, passport) {
-
-  // =====================================
-  // HOME PAGE (with login links) ========
-  // =====================================
-  app.get('/', function(req, res, next) {
-    if (req.isAuthenticated()) {
-      res.redirect('/profile');
-    } else {
-      res.render('home.ejs');
-    }
-  });
-
   // =====================================
   // LOGIN ===============================
   // =====================================

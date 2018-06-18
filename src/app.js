@@ -39,6 +39,7 @@ app.use(flash());
 // set routes
 app.use('/static', express.static('public'));
 require('./config/passport')(passport);
+require('./routes/profile.js')(app, passport);
 require('./routes/login.js')(app, passport);
 require('./routes/game.js')(app, passport);
 
