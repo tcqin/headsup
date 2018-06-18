@@ -8,8 +8,9 @@ module.exports = function(app, passport) {
   app.get('/', function(req, res, next) {
     if (req.isAuthenticated()) {
       res.redirect('/profile');
+    } else {
+      res.render('home.ejs');
     }
-    res.render('home.ejs');
   });
 
   // =====================================
@@ -18,9 +19,10 @@ module.exports = function(app, passport) {
   app.get('/login', function(req, res) {
     if (req.isAuthenticated()) {
       res.redirect('/profile');
+    } else {
+      // render the page and pass in any flash data if it exists
+      res.render('login.ejs', { message: req.flash('loginMessage') }); 
     }
-    // render the page and pass in any flash data if it exists
-    res.render('login.ejs', { message: req.flash('loginMessage') }); 
   });
 
   app.post('/login', passport.authenticate('local-login', {
@@ -35,9 +37,10 @@ module.exports = function(app, passport) {
   app.get('/signup', function(req, res) {
     if (req.isAuthenticated()) {
       res.redirect('/profile');
+    } else {
+      // render the page and pass in any flash data if it exists
+      res.render('signup.ejs', { message: req.flash('signupMessage') });
     }
-    // render the page and pass in any flash data if it exists
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
   });
 
   app.post('/signup', passport.authenticate('local-signup', {
@@ -52,10 +55,11 @@ module.exports = function(app, passport) {
   app.get('/profile', isLoggedIn, function(req, res) {
     if (!req.isAuthenticated()) {
       res.redirect('/');
+    } else {
+      res.render('profile.ejs', {
+          user : req.user // get the user out of session and pass to template
+      });
     }
-    res.render('profile.ejs', {
-        user : req.user // get the user out of session and pass to template
-    });
   });
 
   // =====================================
@@ -71,7 +75,6 @@ module.exports = function(app, passport) {
     req.logout();
     res.redirect('/');
   });
-
 };
 
 // =====================================
