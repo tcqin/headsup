@@ -15,9 +15,13 @@ $(function () {
   // updating the online users column (login)
   socket.on('user-login', function(user) {
     if (user == username) return;
-    var user_object = document.createElement('p');
-    user_object.id = 'online-user-' + user;
-    user_object.innerHTML = user;
+    const user_object = document.createElement('div');
+    $(user_object).addClass('card online-user')
+                  .attr('id', 'online-user-' + user);
+    const body = document.createElement('div');
+    $(body).addClass('card card-body')
+           .html(user)
+           .appendTo($(user_object));
     $(user_object).appendTo($('#online-users'));
   })
 

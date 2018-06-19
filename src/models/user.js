@@ -7,6 +7,9 @@ const UserModelSchema = new mongoose.Schema({
 
     online: Boolean,
 
+    stars: Number,
+    last_game: String,
+
     local: {
         username: String,
         password: String

@@ -44,6 +44,14 @@ footer {
   padding: 10px;
 }
 
+.online-user:hover {
+  cursor: pointer;
+  opacity: .75;
+}
+
 #chat-messages {
   height: 450px;
 }
+
+
+
